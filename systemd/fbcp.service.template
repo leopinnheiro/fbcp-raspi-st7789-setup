@@ -1,0 +1,11 @@
+[Unit]
+Description=fbcp-ili9341 SPI framebuffer
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/local/bin/fbcp-ili9341
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target

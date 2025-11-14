@@ -1,0 +1,6 @@
+dtparam=spi=on
+
+dtoverlay=vc4-fkms-v3d
+max_framebuffers=2
+
+disable_overscan=1
