@@ -17,20 +17,31 @@ cd fbcp-ili9341
 mkdir -p build && cd build
 
 # Inputs interativos
-GPIO_DC=$(ask "GPIO TFT Data/Control" "25")
-GPIO_RST=$(ask "GPIO TFT Reset" "24")
-SPI_DIV=$(ask "SPI Clock Divisor" "4")
+read -p "GPIO for DC (default 25): " GPIO_DC
+GPIO_DC=${GPIO_DC:-25}
+
+read -p "GPIO for RESET (default 27): " GPIO_RST
+GPIO_RST=${GPIO_RST:-27}
+
+read -p "GPIO for CS (default 8): " GPIO_CS
+GPIO_CS=${GPIO_CS:-8}
+
+read -p "SPI clock divisor (default 4): " SPI_DIV
+SPI_DIV=${SPI_DIV:-4}
+
 
 info "Rodando CMake..."
 
 cmake -DST7789=ON \
       -DGPIO_TFT_DATA_CONTROL="$GPIO_DC" \
       -DGPIO_TFT_RESET_PIN="$GPIO_RST" \
+      -DGPIO_TFT_CS_PIN="$GPIO_CS" \
       -DUSE_DMA_TRANSFERS=ON \
       -DSPI_BUS_CLOCK_DIVISOR="$SPI_DIV" \
       -DDISPLAY_ROTATE_180_DEGREES=ON \
       -DDISPLAY_CROPPED_INSTEAD_OF_SCALING=ON \
-      -DSTATISTICS=0 ..
+      -DSTATISTICS=0 \
+      ..
 
 info "Compilando..."
 make -j4
