@@ -1,7 +1,7 @@
 #!/bin/bash
 source "$(dirname "$0")/utils.sh"
 
-info "Baixando seu fork do fbcp-ili9341..."
+info "Cloning fbcp-ili9341 fork..."
 
 # Troque AQUI pela URL do seu fork:
 FBCP_URL="https://github.com/leopinnheiro/fbcp-ili9341.git"
@@ -9,7 +9,7 @@ FBCP_URL="https://github.com/leopinnheiro/fbcp-ili9341.git"
 if [ ! -d fbcp-ili9341 ]; then
     git clone "$FBCP_URL"
 else
-    warn "fbcp-ili9341 já existe, atualizando..."
+    warn "fbcp-ili9341 already exists, updating repository..."
     cd fbcp-ili9341 && git pull && cd ..
 fi
 
@@ -29,8 +29,7 @@ GPIO_CS=${GPIO_CS:-8}
 read -p "SPI clock divisor (default 4): " SPI_DIV
 SPI_DIV=${SPI_DIV:-4}
 
-
-info "Rodando CMake..."
+info "Running CMake..."
 
 cmake -DST7789=ON \
       -DGPIO_TFT_DATA_CONTROL="$GPIO_DC" \
@@ -43,9 +42,9 @@ cmake -DST7789=ON \
       -DSTATISTICS=0 \
       ..
 
-info "Compilando..."
+info "Compiling..."
 make -j4
 
 sudo cp fbcp-ili9341 /usr/local/bin/
 
-success "fbcp-ili9341 instalado!"
+success "fbcp-ili9341 installed!"
