@@ -1,30 +1,20 @@
 #!/bin/bash
 source "$(dirname "$0")/utils.sh"
 
-CONFIG="/boot/config.txt"
+SAMPLE="$(dirname "$0")/../config/config.txt.sample"
+TARGET="/boot/config.txt"
 
-info "Applying necessary changes to $CONFIG"
+info "Applying clean config.txt for framebuffer compatibility"
 
-# Função auxiliar pra adicionar apenas se não existir
-append_if_missing() {
-    local key="$1"
-    if ! grep -q "^$key" "$CONFIG"; then
-        echo "$key" | sudo tee -a "$CONFIG" > /dev/null
-        success "Added: $key"
-    else
-        info "Already present: $key"
-    fi
-}
+# Backup
+if [ -f "$TARGET" ]; then
+    BACKUP="${TARGET}.bak"
+    sudo cp "$TARGET" "$BACKUP"
+    success "Backup created: $BACKUP"
+fi
 
-# Habilitar SPI
-append_if_missing "dtparam=spi=on"
+# Replace
+sudo cp "$SAMPLE" "$TARGET"
+success "Replaced $TARGET with clean sample configuration."
 
-# Ativar FKMS (legacy driver com DispmanX)
-append_if_missing "dtoverlay=vc4-fkms-v3d"
-
-# Recomendações opcionais
-append_if_missing "max_framebuffers=2"
-append_if_missing "disable_overscan=1"
-append_if_missing "dtparam=audio=on"
-
-success "All required configuration options have been applied!"
+info "Done! Reboot required."

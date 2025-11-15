@@ -67,6 +67,12 @@ This installer has been **fully tested** on:
 
 ## 🚀 Usage
 
+```bash
+sudo apt update
+sudo apt full-upgrade -y
+sudo apt install -y git
+```
+
 Clone the repository:
 
 ```bash
@@ -77,7 +83,7 @@ cd fbcp-raspi-st7789-setup
 Run setup:
 ```bash
 chmod +x setup_display.sh
-./setup_display.sh
+sudo ./setup_display.sh
 ```
 
 The script will:

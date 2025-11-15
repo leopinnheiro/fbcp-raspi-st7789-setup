@@ -1,6 +1,28 @@
+# === SPI + Framebuffer for FBCP ===
 dtparam=spi=on
-
 dtoverlay=vc4-fkms-v3d
 max_framebuffers=2
-
 disable_overscan=1
+
+# === Force HDMI framebuffer even with no monitor ===
+hdmi_force_hotplug=1
+hdmi_force_mode=1
+hdmi_group=2
+hdmi_mode=87
+hdmi_cvt=320 240 60 1 0 0 0
+
+# === Audio ===
+dtparam=audio=on
+
+# === Auto-detect camera/display (safe to keep ON) ===
+camera_auto_detect=1
+display_auto_detect=1
+
+# === REMOVE duplicated settings ===
+# (Do NOT re-add vc4-kms-v3d or duplicate fkms lines)
+
+[cm4]
+otg_mode=1
+
+[pi4]
+arm_boost=1
