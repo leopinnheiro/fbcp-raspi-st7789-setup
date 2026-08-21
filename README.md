@@ -77,8 +77,8 @@ sudo apt install -y git
 git clone https://github.com/leopinnheiro/fbcp-raspi-st7789-setup.git
 cd fbcp-raspi-st7789-setup
 
-chmod +x setup_display.sh
 sudo ./setup_display.sh
+chmod +x setup_display.sh
 ```
 
 The script will:
@@ -99,7 +99,7 @@ After reboot, the ST7789 display will automatically start mirroring the framebuf
 
 ## 🔌 Wiring / Pinout
 
-Some ST7789 modules label their SPI pins as **SDA** and **SCL** (borrowed from I2C naming), even though this display uses SPI, not I2C. Mapping to the Raspberry Pi:
+Some ST7789 modules label their SPI pins as **SDA** and **SCL** (borrowed from I2C naming), even though this display uses SPI, not I2C. Mapping to the Raspberry Pi (see the [official GPIO pinout reference](https://pinout.xyz) for physical pin locations):
 
 | Display pin | Signal       | Raspberry Pi GPIO (BCM)                           | Physical pin  |
 | ----------- | ------------ | ------------------------------------------------- | ------------- |
@@ -123,5 +123,7 @@ CS, DC and RST are asked interactively during setup (`setup_display.sh`), with t
 - The installer does not overwrite your /boot/config.txt, it only appends safe entries.
 
 - You are free to edit pin assignments, rotation and SPI speed during setup.
+
+- During the build, you'll be asked whether to enable fbcp-ili9341's performance statistics logging (`STATISTICS`), which prints FPS/timing info to the console. It's **disabled by default** and only useful for debugging performance.
 
 - The scripts are modular and can be reused in other automation systems.

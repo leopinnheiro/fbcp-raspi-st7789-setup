@@ -46,6 +46,13 @@ GPIO_CS=${GPIO_CS:-8}
 read -p "SPI clock divisor (default 4): " SPI_DIV
 SPI_DIV=${SPI_DIV:-4}
 
+read -p "Enable performance statistics logging to console? (y/N): " ENABLE_STATS
+if [[ "$ENABLE_STATS" =~ ^[Yy]$ ]]; then
+    STATISTICS=1
+else
+    STATISTICS=0
+fi
+
 info "Running CMake..."
 
 cmake -DST7789=ON \
@@ -59,7 +66,7 @@ cmake -DST7789=ON \
     -DUSE_DMA_BOUNCE_BUFFER=ON \
     -DUPDATE_FRAMES_IN_SINGLE_SPI_TRANSACTION=ON \
     -DTARGET_REFRESH_RATE=60 \
-    -DSTATISTICS=1 \
+    -DSTATISTICS="$STATISTICS" \
     -DSTATISTICS_PERIOD_SECONDS=5 \
     ..
 
