@@ -95,6 +95,27 @@ The script will:
 
 After reboot, the ST7789 display will automatically start mirroring the framebuffer.
 
+## 🔌 Wiring / Pinout
+
+Some ST7789 modules label their SPI pins as **SDA** and **SCL** (borrowed from I2C naming), even though this display uses SPI, not I2C. Mapping to the Raspberry Pi:
+
+| Display pin | Signal | Raspberry Pi GPIO (BCM) | Physical pin |
+|---|---|---|---|
+| VCC | Power | 3.3V | 1 or 17 |
+| GND | Ground | GND | 6, 9, 14, ... |
+| SDA | MOSI (data) | GPIO10 | 19 |
+| SCL | SCLK (clock) | GPIO11 | 23 |
+| CS | Chip Select | GPIO8 (default, configurable) | 24 |
+| DC | Data/Command | GPIO25 (default, configurable) | 22 |
+| RST | Reset | GPIO27 (default, configurable) | 13 |
+| BL / LED | Backlight | 3.3V (always on) or any free GPIO for PWM control | — |
+
+⚠️ **Use 3.3V for VCC, not 5V** — most of these ST7789 boards are 3.3V-only and can be damaged by 5V.
+
+CS, DC and RST are asked interactively during setup (`setup_display.sh`), with the defaults shown above.
+
+---
+
 ## ⚠️ Notes
 
 - The installer does not overwrite your /boot/config.txt, it only appends safe entries.
