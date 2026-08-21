@@ -2,7 +2,7 @@
 
 This project provides a fully automated, modular installer that configures a Raspberry Pi to drive SPI TFT displays (ST7789, 320×240) using a custom build of **fbcp-ili9341**, including:
 
-- Automatic SPI configuration  
+- Automatic SPI configuration
 - Automatic installation of fbcp-ili9341 (with your custom fork)
 - Legacy FKMS video stack activation (required for DispmanX)
 - Systemd service installation
@@ -13,12 +13,12 @@ This project provides a fully automated, modular installer that configures a Ras
 
 ## ✅ Supported Raspberry Pi Models
 
-| Model | Supported | Notes |
-|-------|-----------|-------|
-| **Raspberry Pi Zero 2 W** | ✔ Yes | Fully tested |
-| Raspberry Pi Zero W (original) | ✔ Yes | Slower, but works |
-| Raspberry Pi 3 / 4 | ✔ Yes | Must use Bullseye (Legacy/with FKMS) |
-| Raspberry Pi 5 | ❌ No | DispmanX removed — fbcp-ili9341 cannot run |
+| Model                          | Supported | Notes                                      |
+| ------------------------------ | --------- | ------------------------------------------ |
+| **Raspberry Pi Zero 2 W**      | ✔ Yes     | Fully tested                               |
+| Raspberry Pi Zero W (original) | ✔ Yes     | Slower, but works                          |
+| Raspberry Pi 3 / 4             | ✔ Yes     | Must use Bullseye (Legacy/with FKMS)       |
+| Raspberry Pi 5                 | ❌ No     | DispmanX removed — fbcp-ili9341 cannot run |
 
 ---
 
@@ -26,8 +26,8 @@ This project provides a fully automated, modular installer that configures a Ras
 
 This installer **requires Raspberry Pi OS Bullseye**, because:
 
-- Bullseye still includes **DispmanX**, needed by fbcp-ili9341  
-- Bookworm (2023+) removed DispmanX completely  
+- Bullseye still includes **DispmanX**, needed by fbcp-ili9341
+- Bookworm (2023+) removed DispmanX completely
 
 ### ✔ Download Raspberry Pi OS Bullseye Lite (Recommended)
 
@@ -38,17 +38,19 @@ https://downloads.raspberrypi.com/raspios_lite_armhf/images/raspios_lite_armhf-2
 
 This is the version used during testing and guarantees full compatibility with:
 
-- Raspberry Pi Zero 2 W  
-- fkms (legacy video layer)  
-- fbcp-ili9341  
-- ST7789 SPI displays  
+- Raspberry Pi Zero 2 W
+- fkms (legacy video layer)
+- fbcp-ili9341
+- ST7789 SPI displays
 
 ### ✔ Supported OS:
-- Raspberry Pi OS **Bullseye**  
-- Raspberry Pi OS **Legacy** Bullseye  
+
+- Raspberry Pi OS **Bullseye**
+- Raspberry Pi OS **Legacy** Bullseye
 - Raspberry Pi OS **Legacy** Buster
 
 ### ❌ NOT Supported:
+
 - Raspberry Pi OS **Bookworm**
 - Any distro without **vc4-fkms-v3d**
 
@@ -99,16 +101,16 @@ After reboot, the ST7789 display will automatically start mirroring the framebuf
 
 Some ST7789 modules label their SPI pins as **SDA** and **SCL** (borrowed from I2C naming), even though this display uses SPI, not I2C. Mapping to the Raspberry Pi:
 
-| Display pin | Signal | Raspberry Pi GPIO (BCM) | Physical pin |
-|---|---|---|---|
-| VCC | Power | 3.3V | 1 or 17 |
-| GND | Ground | GND | 6, 9, 14, ... |
-| SDA | MOSI (data) | GPIO10 | 19 |
-| SCL | SCLK (clock) | GPIO11 | 23 |
-| CS | Chip Select | GPIO8 (default, configurable) | 24 |
-| DC | Data/Command | GPIO25 (default, configurable) | 22 |
-| RST | Reset | GPIO27 (default, configurable) | 13 |
-| BL / LED | Backlight | 3.3V (always on) or any free GPIO for PWM control | — |
+| Display pin | Signal       | Raspberry Pi GPIO (BCM)                           | Physical pin  |
+| ----------- | ------------ | ------------------------------------------------- | ------------- |
+| CS          | Chip Select  | GPIO8 (default, configurable)                     | 24            |
+| DC          | Data/Command | GPIO25 (default, configurable)                    | 22            |
+| RST         | Reset        | GPIO27 (default, configurable)                    | 13            |
+| SDA         | MOSI (data)  | GPIO10                                            | 19            |
+| SCL         | SCLK (clock) | GPIO11                                            | 23            |
+| VCC         | Power        | 3.3V                                              | 1 or 17       |
+| GND         | Ground       | GND                                               | 6, 9, 14, ... |
+| BL / LED    | Backlight    | 3.3V (always on) or any free GPIO for PWM control | —             |
 
 ⚠️ **Use 3.3V for VCC, not 5V** — most of these ST7789 boards are 3.3V-only and can be damaged by 5V.
 

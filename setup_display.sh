@@ -10,17 +10,17 @@ echo "────────────────────────�
 echo "   Raspberry Pi ST7789 Display Installer   "
 echo "───────────────────────────────────────────"
 
-info "Instalando dependências..."
-bash "$SCRIPTS/install_dependencies.sh"
+# info "Instalando dependências..."
+# bash "$SCRIPTS/install_dependencies.sh"
 
-info "Aplicando alterações ao config.txt..."
-bash "$SCRIPTS/apply_config_txt.sh"
+# info "Aplicando alterações ao config.txt..."
+# bash "$SCRIPTS/apply_config_txt.sh"
 
 info "Instalando e compilando fbcp..."
 bash "$SCRIPTS/install_fbcp.sh"
 
-info "Configurando serviço systemd..."
-bash "$SCRIPTS/create_service.sh"
+# info "Configurando serviço systemd..."
+# bash "$SCRIPTS/create_service.sh"
 
 warn "Setup concluído!"
 

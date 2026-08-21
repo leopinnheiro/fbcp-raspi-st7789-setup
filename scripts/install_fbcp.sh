@@ -13,7 +13,24 @@ else
     cd fbcp-ili9341 && git pull && cd ..
 fi
 
+if systemctl list-unit-files | grep -q "^fbcp.service"; then
+    if systemctl is-active --quiet fbcp; then
+        info "Stopping existing fbcp service..."
+        sudo systemctl stop fbcp
+    else
+        warn "fbcp service exists but is not active."
+    fi
+else
+    warn "fbcp.service not found, skipping stop."
+fi
+
 cd fbcp-ili9341
+
+if [ -d build ]; then
+    warn "Removing old build directory..."
+    rm -rf build
+fi
+
 mkdir -p build && cd build
 
 # Inputs interativos
@@ -31,20 +48,32 @@ SPI_DIV=${SPI_DIV:-4}
 
 info "Running CMake..."
 
-cmake -DST7789=ON \
-      -DGPIO_TFT_DATA_CONTROL="$GPIO_DC" \
-      -DGPIO_TFT_RESET_PIN="$GPIO_RST" \
-      -DGPIO_TFT_CS_PIN="$GPIO_CS" \
-      -DUSE_DMA_TRANSFERS=ON \
-      -DSPI_BUS_CLOCK_DIVISOR="$SPI_DIV" \
-      -DDISPLAY_ROTATE_180_DEGREES=ON \
-      -DDISPLAY_CROPPED_INSTEAD_OF_SCALING=ON \
-      -DSTATISTICS=0 \
-      ..
+cmake -DST7789=ON \ 
+    -DGPIO_TFT_DATA_CONTROL="$GPIO_DC" \
+    -DGPIO_TFT_RESET_PIN="$GPIO_RST" \
+    -DGPIO_TFT_CS_PIN="$GPIO_CS" \
+    -DUSE_DMA_TRANSFERS=ON \
+    -DSPI_BUS_CLOCK_DIVISOR="$SPI_DIV" \
+    -DDISPLAY_ROTATE_180_DEGREES=ON \
+    -DDISPLAY_CROPPED_INSTEAD_OF_SCALING=ON \
+    -DUSE_DMA_TRANSFERS=ON \
+    -DUSE_DMA_BOUNCE_BUFFER=ON \
+    -DUPDATE_FRAMES_IN_SINGLE_SPI_TRANSACTION=ON \
+    -DTARGET_REFRESH_RATE=60 \
+    -DSTATISTICS=1 \
+    -DSTATISTICS_PERIOD_SECONDS=5 \
+    ..
 
 info "Compiling..."
 make -j4
 
 sudo cp fbcp-ili9341 /usr/local/bin/
+
+if systemctl list-unit-files | grep -q "^fbcp.service"; then
+    info "Starting fbcp service..."
+    sudo systemctl start fbcp
+else
+    warn "fbcp.service not found, binary installed but service not started."
+fi
 
 success "fbcp-ili9341 installed!"
